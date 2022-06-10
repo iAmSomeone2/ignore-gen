@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     }
 
     std::vector<std::string> searchKeys;
-    auto buf = std::array<char, 32>();
+    auto buf = std::array<char, 33>();
     for (int i = optind; i < argc; i++) {
         strncpy(buf.data(), argv[i], 32);
         searchKeys.emplace_back(buf.data());

@@ -1,5 +1,6 @@
 project('ignore-gen', 'cpp',
   version : '0.0.1',
+  meson_version: '>=0.56.0',
   default_options : [
     'warning_level=3',
     'cpp_std=c++17'])
@@ -13,12 +14,17 @@ summary({'buildtype': get_option('buildtype'),
         }, section: 'Configuration')
 
 # Configure project
+install_prefix = get_option('prefix')
+datadir = get_option('datadir')
+buildtype = get_option('buildtype')
+message('Configuring ' + meson.project_name() + ' for ' + buildtype + '...')
 cdata = configuration_data()
-if get_option('buildtype') == 'release'
-  cdata.set_quoted('DB_FILE', '{datadir}/{projectname}/ignore.db')
+if buildtype == 'release'
+  cdata.set_quoted('DB_FILE', join_paths(install_prefix, datadir, meson.project_name(), 'ignore.db'))
 else
-  cdata.set_quoted('DB_FILE', 'data/ignore.db')
+  cdata.set_quoted('DB_FILE', join_paths(meson.project_build_root(), 'data', 'ignore.db'))
 endif
+
 cdata.set_quoted('PROGRAM_NAME', 'ignore-gen')
 cdata.set_quoted('PROGRAM_VERSION', meson.project_version())
 config_header = files('projconfig.h.in')
@@ -35,9 +41,20 @@ fmt_dep = dependency('fmt',
   version: '>=8.1',
   required: true)
 
+copy = find_program('pkg/copy.py')
+
 # Handle build targets
 data_files = files('data/ignore.db')
 install_data(data_files, install_mode: 'rw-r--r--')
+if buildtype != 'release'
+  message('Copying data files to build directory')
+  run_command(
+    copy,
+    join_paths('data', 'ignore.db'),
+    join_paths('data', 'ignore.db'),
+    check: true
+  )
+endif
 
 gitignorio_srcs = files(
   'src/main.cpp',
