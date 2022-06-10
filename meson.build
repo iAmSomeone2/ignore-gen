@@ -16,10 +16,9 @@ summary({'buildtype': get_option('buildtype'),
 # Configure project
 install_prefix = get_option('prefix')
 datadir = get_option('datadir')
-buildtype = get_option('buildtype')
-message('Configuring ' + meson.project_name() + ' for ' + buildtype + '...')
+is_package_build = get_option('package_build')
 cdata = configuration_data()
-if buildtype == 'release'
+if is_package_build
   cdata.set_quoted('DB_FILE', join_paths(install_prefix, datadir, meson.project_name(), 'ignore.db'))
 else
   cdata.set_quoted('DB_FILE', join_paths(meson.project_build_root(), 'data', 'ignore.db'))
@@ -46,7 +45,7 @@ copy = find_program('pkg/copy.py')
 # Handle build targets
 data_files = files('data/ignore.db')
 install_data(data_files, install_mode: 'rw-r--r--')
-if buildtype != 'release'
+if is_package_build
   message('Copying data files to build directory')
   run_command(
     copy,

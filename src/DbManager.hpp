@@ -22,7 +22,7 @@ public:
 private:
     sqlite3* dbConnection = nullptr;
 
-    const std::string getSqliteError() const;
+    std::string getSqliteError() const;
 
     std::shared_ptr<sqlite3_stmt> prepareStatement(const std::string& sqlStr);
 };
