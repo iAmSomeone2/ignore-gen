@@ -17,10 +17,11 @@
 namespace fs = std::filesystem;
 
 void printUsage() {
+    std::cerr << "\n\t" << PROGRAM_NAME << " " << PROGRAM_VERSION << "\n\n"; 
     std::cerr << "usage: " << PROGRAM_NAME << " [OPTION] <gitignore-keys>\n";
-    std::cerr << "  -h, --help\t\t\tPrint this message and exit.\n";
+    std::cerr << "  -h, --help\t\t\t\t\tPrint this message and exit.\n";
     std::cerr << "  -o, --output=</path/ignorefile>\t\tPath to write .gitignore file to.\n";
-    std::cerr << "  -l, --list-keys\t\tList all .gitignore keys and exit.\n";
+    std::cerr << "  -l, --list-keys\t\t\t\tList all .gitignore keys and exit.\n";
 }
 
 void writeGitignore(const std::vector<IgnoreEntry>& entries, const fs::path& outPath) {

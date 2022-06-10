@@ -1,5 +1,6 @@
 #pragma once
 
 #mesondefine PROGRAM_NAME
+#mesondefine PROGRAM_VERSION
 
 #mesondefine DB_FILE
