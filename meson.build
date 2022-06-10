@@ -1,4 +1,4 @@
-project('gitignorio', 'cpp',
+project('ignore-gen', 'cpp',
   version : '0.1',
   default_options : [
     'warning_level=3',
@@ -7,7 +7,7 @@ project('gitignorio', 'cpp',
 # Configure project
 cdata = configuration_data()
 cdata.set_quoted('DB_FILE', 'data/ignore.db')
-cdata.set_quoted('PROGRAM_NAME', 'gitignorio')
+cdata.set_quoted('PROGRAM_NAME', 'ignore-gen')
 config_header = files('projconfig.h.in')
 configure_file(configuration: cdata,
   input: config_header,
@@ -15,7 +15,7 @@ configure_file(configuration: cdata,
 config_include = include_directories('.')
 
 sqlite_dep = dependency('sqlite3',
-  version: '>=3.36.0',
+  version: '>=3.36',
   required: true)
 fmt_dep = dependency('fmt',
   version: '>=8.1',
@@ -28,7 +28,7 @@ gitignorio_srcs = files(
   'src/main.cpp',
   'src/IgnoreEntry.cpp',
   'src/DbManager.cpp')
-exe = executable('gitignorio', gitignorio_srcs,
+exe = executable('ignore-gen', gitignorio_srcs,
   dependencies: [
     sqlite_dep,
     fmt_dep

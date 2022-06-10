@@ -17,8 +17,9 @@
 namespace fs = std::filesystem;
 
 void printUsage() {
-    std::cerr << "usage: " << PROGRAM_NAME << " [OPTION]\n";
+    std::cerr << "usage: " << PROGRAM_NAME << " [OPTION] <gitignore-keys>\n";
     std::cerr << "  -h, --help\t\t\tPrint this message and exit.\n";
+    std::cerr << "  -o, --output=</path/ignorefile>\t\tPath to write .gitignore file to.\n";
     std::cerr << "  -l, --list-keys\t\tList all .gitignore keys and exit.\n";
 }
 
@@ -43,7 +44,7 @@ int main(int argc, char **argv) {
 
     struct option longopts[] = {
         {"help", no_argument, &helpFlag, 1},
-        {"list-keys", optional_argument, &listKeysFlag, 'l'},
+        {"list-keys", no_argument, &listKeysFlag, 'l'},
         {"output", required_argument, nullptr, 'o'}
     };
 

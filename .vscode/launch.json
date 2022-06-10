@@ -8,7 +8,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/builddir/gitignorio",
+            "program": "${workspaceFolder}/builddir/ignore-gen",
             "args": ["c", "c++", "cow"],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build project"
