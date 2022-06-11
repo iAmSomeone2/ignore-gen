@@ -40,4 +40,8 @@ meson compile -C builddir
 
 ### Production build
 
-TODO
+```sh
+meson setup -Dbuildtype=release -Dpackage_build=true builddir
+meson compile -C builddir
+cd builddir && sudo ninja install
+```
