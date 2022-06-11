@@ -18,10 +18,11 @@ install_prefix = get_option('prefix')
 datadir = get_option('datadir')
 is_package_build = get_option('package_build')
 cdata = configuration_data()
+
 if is_package_build
   cdata.set_quoted('DB_FILE', join_paths(install_prefix, datadir, meson.project_name(), 'ignore.db'))
 else
-  cdata.set_quoted('DB_FILE', join_paths(meson.project_build_root(), 'data', 'ignore.db'))
+  cdata.set_quoted('DB_FILE', join_paths(meson.project_source_root(), 'data', 'ignore.db'))
 endif
 
 cdata.set_quoted('PROGRAM_NAME', 'ignore-gen')
@@ -40,20 +41,13 @@ fmt_dep = dependency('fmt',
   version: '>=8.1',
   required: true)
 
-copy = find_program('pkg/copy.py')
+
+data_dl = find_program('scripts/download-data.py')
 
 # Handle build targets
+run_command(data_dl, check: true)
 data_files = files('data/ignore.db')
 install_data(data_files, install_mode: 'rw-r--r--')
-if is_package_build
-  message('Copying data files to build directory')
-  run_command(
-    copy,
-    join_paths('data', 'ignore.db'),
-    join_paths('data', 'ignore.db'),
-    check: true
-  )
-endif
 
 gitignorio_srcs = files(
   'src/main.cpp',

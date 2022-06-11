@@ -1,4 +1,6 @@
 builddir/
+*.db
+!*/**/*.hash
 
 ### C++ ###
 # Prerequisites

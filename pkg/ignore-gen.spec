@@ -9,6 +9,7 @@ Source0:        https://github.com/iAmSomeone2/ignore-gen/archive/refs/tags/v%{v
 
 BuildRequires:  meson >= 0.56
 BuildRequires:  ninja-build >= 1.10
+BuildRequires:  python3-requests
 BuildRequires:  gcc-c++ >= 7
 BuildRequires:  fmt-devel >= 8.1
 BuildRequires:  sqlite-devel >= 3.36
@@ -40,5 +41,5 @@ Offline .gitignore generator based on gitignore.io
 
 
 %changelog
-* Fri Jun 10 2022 Brenden Davidson <davidson.brenden15@gmail.com>
-- 
+* Sat Jun 11 2022 Brenden Davidson <davidson.brenden15@gmail.com>
+- MVP release
