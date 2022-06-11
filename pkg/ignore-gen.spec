@@ -1,11 +1,11 @@
 Name:           ignore-gen
-Version:        0.0.1
+Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Offline .gitignore generator based on gitignore.io
 
 License:        MIT
 URL:            https://github.com/iAmSomeone2/ignore-gen
-Source0:        https://github.com/iAmSomeone2/ignore-gen/archive/refs/tags/v%{version}-alpha.tar.gz
+Source0:        https://github.com/iAmSomeone2/ignore-gen/archive/refs/tags/v%{version}.tar.gz
 
 BuildRequires:  meson >= 0.56
 BuildRequires:  ninja-build >= 1.10
@@ -20,7 +20,7 @@ Requires:       sqlite >= 3.36
 Offline .gitignore generator based on gitignore.io
 
 %prep
-%setup -n %{name}-%{version}-alpha
+%autosetup
 
 
 %build

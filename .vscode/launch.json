@@ -10,7 +10,7 @@
             "name": "Debug",
             "program": "${workspaceFolder}/builddir/ignore-gen",
             "args": ["c", "c++", "cow"],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/builddir",
             "preLaunchTask": "Build project"
         }
     ]

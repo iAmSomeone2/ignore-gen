@@ -9,6 +9,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <set>
 #include <array>
 
 #include <string.h>
@@ -20,7 +21,7 @@ void printUsage() {
     std::cerr << "\n\t" << PROGRAM_NAME << " " << PROGRAM_VERSION << "\n\n"; 
     std::cerr << "usage: " << PROGRAM_NAME << " [OPTION] <gitignore-keys>\n";
     std::cerr << "  -h, --help\t\t\t\t\tPrint this message and exit.\n";
-    std::cerr << "  -o, --output=</path/ignorefile>\t\tPath to write .gitignore file to.\n";
+    std::cerr << "  -o, --output=</path/ignorefile>\t\tCustom path to write .gitignore file to.\n";
     std::cerr << "  -l, --list-keys\t\t\t\tList all .gitignore keys and exit.\n";
 }
 
@@ -41,7 +42,6 @@ int main(int argc, char **argv) {
     // Set up arguments
     int helpFlag = 0;
     int listKeysFlag = 0;
-    bool outputSpecified = false;
 
     struct option longopts[] = {
         {"help", no_argument, &helpFlag, 1},
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
     int opt;
     // std::string outPath;
-    fs::path outPath;
+    fs::path outPath = fs::path("./.gitignore");
     while (true) {
         opt = getopt_long(argc, argv, "hlo:", longopts, 0);
         // return if out of options
@@ -66,14 +66,15 @@ int main(int argc, char **argv) {
                 break;
             case 'o':
                 outPath = fs::path(optarg);
-                outputSpecified = true;
                 break;
             case '?':
-                if (optopt == 'o') {
-                    fmt::print(stderr, "Option -%c requires an argument.\n", optopt);
-                } else if (isprint(optopt)) {
-                    fmt::print(stderr, "Unknown option \'-%c\'.\n", optopt);
-                }
+                // if (optopt == 'o') {
+                //     std::cerr << "Option \'-" << static_cast<char>(optopt) << "\' requires an argument.\n";
+                //     // fmt::print(stderr, "Option -%c requires an argument.\n", optopt);
+                // } else if (isprint(optopt)) {
+                //     std::cerr << "Unknown option \'-" << static_cast<char>(optopt) << "\'.\n";
+                //     // fmt::print(stderr, "Unknown option \'-%c\'.\n", optopt);
+                // }
                 return 1;
             default:
                 break;
@@ -83,12 +84,6 @@ int main(int argc, char **argv) {
     if (helpFlag) {
         printUsage();
         return 0;
-    }
-
-    if (!outputSpecified) {
-        // TODO: setup fallback to stdout.
-        std::cerr << "[ERROR] Output file must be specified.\n";
-        return 1;
     }
 
     auto db = DbManager(DB_FILE, SQLITE_OPEN_READONLY);
@@ -101,11 +96,11 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    std::vector<std::string> searchKeys;
+    std::set<std::string> searchKeys;
     auto buf = std::array<char, 33>();
     for (int i = optind; i < argc; i++) {
         strncpy(buf.data(), argv[i], 32);
-        searchKeys.emplace_back(buf.data());
+        searchKeys.emplace(buf.data());
     }
 
     // Construct .gitignore using the provided keys
